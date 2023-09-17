@@ -28,6 +28,7 @@ var quizQuestions = [
   "This is question5",
 ];
 
+// 2D array for all quiz answer choices
 var quizAnswers = [
   ["q1a1", "q1a2", "q1a3", "q1a4"],
   ["q2a1", "q2a2", "q2a3", "q2a4"],
@@ -36,22 +37,31 @@ var quizAnswers = [
   ["q5a1", "q5a2", "q5a3", "q5a4"],
 ];
 
+// var testArray = quizAnswers[1][2];
+// console.log(testArray);
+
 function setQuizPage(pageNum) {
   var questionEl = document.createElement("p");
   var listEl = document.createElement("ul");
-  var li1 = document.createElement("li");
-  var li2 = document.createElement("li");
-  var li3 = document.createElement("li");
-  var li4 = document.createElement("li");
+  var listItemEl = [
+    document.createElement("li"),
+    document.createElement("li"),
+    document.createElement("li"),
+    document.createElement("li"),
+  ];
 
   var question = quizEl.appendChild(questionEl);
+  //"pageNum - 1" because the page number will be 1 more than the quizQuestions array index
   question.textContent = quizQuestions[pageNum - 1];
 
   var answerList = quizEl.appendChild(listEl);
-  var choiceA = answerList.appendChild(li1);
-  var choiceB = answerList.appendChild(li2);
-  var choiceC = answerList.appendChild(li3);
-  var choiceD = answerList.appendChild(li4);
+  var choiceA = answerList.appendChild(listItemEl[0]);
+  var choiceB = answerList.appendChild(listItemEl[1]);
+  var choiceC = answerList.appendChild(listItemEl[2]);
+  var choiceD = answerList.appendChild(listItemEl[3]);
+
+  choiceA.appendChild(document.createElement("input", "type=radio"));
+
   console.log(question);
 }
 
