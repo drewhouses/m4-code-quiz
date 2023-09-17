@@ -55,12 +55,18 @@ function setQuizPage(pageNum) {
   question.textContent = quizQuestions[pageNum - 1];
 
   var answerList = quizEl.appendChild(listEl);
-  var choiceA = answerList.appendChild(listItemEl[0]);
-  var choiceB = answerList.appendChild(listItemEl[1]);
-  var choiceC = answerList.appendChild(listItemEl[2]);
-  var choiceD = answerList.appendChild(listItemEl[3]);
 
-  choiceA.appendChild(document.createElement("input", "type=radio"));
+  var answerChoices = [
+    answerList.appendChild(listItemEl[0]),
+    answerList.appendChild(listItemEl[1]),
+    answerList.appendChild(listItemEl[2]),
+    answerList.appendChild(listItemEl[3]),
+  ];
+
+  for (var i = 0; i < 4; i++) {
+    answerChoices[i].appendChild(document.createElement("button")).textContent =
+      quizAnswers[pageNum - 1][i];
+  }
 
   console.log(question);
 }
