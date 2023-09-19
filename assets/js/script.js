@@ -1,11 +1,15 @@
 var startButton = document.getElementById("start-button");
 var timerEl = document.getElementById("timer-box");
 var quizEl = document.getElementById("quiz");
+var currentQuestionIndex = 0;
 
-function sendTimesUpPage() {
-  //   document.body.innerHTML = "";
-  timerEl.textContent = "Time is up";
-}
+// class QuestionObject {
+//   constructor(prompt, choices, correctChoice){
+//     this.prompt = prompt;
+//     this.choices = choices;
+//     this.correctChoice - correctChoice
+//   }
+// }
 
 var timeRemaining = 2;
 function setQuizTimer() {
@@ -13,19 +17,29 @@ function setQuizTimer() {
     timeRemaining--;
     timerEl.textContent = timeRemaining;
 
-    if (timeRemaining === 0) {
+    if (timeRemaining <= 0) {
       clearInterval(timerInterval);
-      sendTimesUpPage();
+      timerEl.textContent = "Time is up";
+      endQuiz();
     }
   }, 1000);
 }
 
 var quizQuestions = [
-  "This is question1",
-  "This is question2",
-  "This is question3",
-  "This is question4",
-  "This is question5",
+  {
+    prompt: "This is question2",
+    choices: ["answer12", "a22", "aa32", "a42"],
+    correctChoice: "answer12",
+  },
+  {
+    prompt: "This is question2",
+    choices: ["answer12", "a22", "aa32", "a42"],
+    correctChoice: "answer12",
+  },
+  // "This is question2",
+  // "This is question3",
+  // "This is question4",
+  // "This is question5",
 ];
 
 // 2D array for all quiz answer choices
@@ -39,40 +53,49 @@ var quizAnswers = [
 
 // var testArray = quizAnswers[1][2];
 // console.log(testArray);
-
-function setQuizPage(pageNum) {
-  var questionEl = document.createElement("p");
+//show a question and answer choices
+function showQuestion() {
+  //
+  var currentQuestion = quizQuestions[currentQuestionIndex];
+  console.log(currentQuestion);
+  var promptEl = document.createElement("p");
+  promptEl.textContent = currentQuestion.prompt;
+  quizEl.appendChild(promptEl);
+  console.log(promptEl);
   var listEl = document.createElement("ul");
-  var listItemEl = [
-    document.createElement("li"),
-    document.createElement("li"),
-    document.createElement("li"),
-    document.createElement("li"),
-  ];
-
-  var question = quizEl.appendChild(questionEl);
-  //"pageNum - 1" because the page number will be 1 more than the quizQuestions array index
-  question.textContent = quizQuestions[pageNum - 1];
-
-  var answerList = quizEl.appendChild(listEl);
-
-  var answerChoices = [
-    answerList.appendChild(listItemEl[0]),
-    answerList.appendChild(listItemEl[1]),
-    answerList.appendChild(listItemEl[2]),
-    answerList.appendChild(listItemEl[3]),
-  ];
-
-  for (var i = 0; i < 4; i++) {
-    answerChoices[i].appendChild(document.createElement("button")).textContent =
-      quizAnswers[pageNum - 1][i];
+  for (i = 0; i < currentQuestion.choices.length; i++) {
+    var choiceEl = document.createElement("button");
+    listEl.appendChild(choiceEl);
+    choiceEl.textContent = currentQuestion.choices[i];
+    choiceEl.addEventListener("click", checkAnswer);
   }
-
-  console.log(question);
+  quizEl.appendChild(listEl);
 }
 
-setQuizPage(1);
+function checkAnswer(event) {
+  console.log("checking");
+  console.log(event);
+  var selectedAnswer = event.target.textContent;
+  console.log(selectedAnswer);
+  var correctAnswer = quizQuestions[currentQuestionIndex].correctChoice;
+  console.log(correctAnswer);
+  //check if right or wrong
+
+  // remember you have an array (array length and index relationship!)
+  //   if(there are questions left){
+  //   currentQuestionIndex ++
+  //   quizEl.innerHTML = ""
+  //   showQuestion()
+  //  } else{
+  //   endQuiz();
+  //  }
+}
+
+function endQuiz() {
+  console.log("ending");
+}
 
 startButton.addEventListener("click", function () {
+  showQuestion();
   setQuizTimer();
 });
