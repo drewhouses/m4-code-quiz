@@ -3,22 +3,15 @@ var timerEl = document.getElementById("timer-box");
 var quizEl = document.getElementById("quiz");
 var currentQuestionIndex = 0;
 
-// class QuestionObject {
-//   constructor(prompt, choices, correctChoice){
-//     this.prompt = prompt;
-//     this.choices = choices;
-//     this.correctChoice - correctChoice
-//   }
-// }
-
-var timeRemaining = 2;
+var timeRemaining = 20;
 function setQuizTimer() {
   var timerInterval = setInterval(function () {
-    timeRemaining--;
     timerEl.textContent = timeRemaining;
+    timeRemaining--;
 
     if (timeRemaining <= 0) {
       clearInterval(timerInterval);
+      quizEl.innerHTML = "";
       timerEl.textContent = "Time is up";
       endQuiz();
     }
@@ -27,42 +20,45 @@ function setQuizTimer() {
 
 var quizQuestions = [
   {
-    prompt: "This is question2",
-    choices: ["answer12", "a22", "aa32", "a42"],
-    correctChoice: "answer12",
+    prompt: "What does CSS stand for?",
+    choices: [
+      "Crunchy Spicy Sauce",
+      "Cascading Syle Sheets",
+      "Captain Super Stan",
+      "Crazy Stupid Style",
+    ],
+    correctChoice: "Cascading Style Sheets",
   },
   {
-    prompt: "This is question2",
-    choices: ["answer12", "a22", "aa32", "a42"],
-    correctChoice: "answer12",
+    prompt: "What does HTML stand for?",
+    choices: ["HoneyTML", "HugeTML", "Hypertext Markup Language", "Cheese"],
+    correctChoice: "Hypertext Markup Language",
   },
-  // "This is question2",
-  // "This is question3",
-  // "This is question4",
-  // "This is question5",
+  {
+    prompt:
+      "What is a very popular JavaScript library that uses the polymorphous method $()",
+    choices: ["Banoodle", "Swiffer Wet Jet?", "jCheese", "jQuery"],
+    correctChoice: "jQuery",
+  },
 ];
 
-// 2D array for all quiz answer choices
-var quizAnswers = [
-  ["q1a1", "q1a2", "q1a3", "q1a4"],
-  ["q2a1", "q2a2", "q2a3", "q2a4"],
-  ["q3a1", "q3a2", "q3a3", "q3a4"],
-  ["q4a1", "q4a2", "q4a3", "q4a4"],
-  ["q5a1", "q5a2", "q5a3", "q5a4"],
-];
+var highScores = {
+  initials: "",
+  score: "",
+};
 
-// var testArray = quizAnswers[1][2];
-// console.log(testArray);
-//show a question and answer choices
 function showQuestion() {
   //
   var currentQuestion = quizQuestions[currentQuestionIndex];
   console.log(currentQuestion);
+
   var promptEl = document.createElement("p");
   promptEl.textContent = currentQuestion.prompt;
   quizEl.appendChild(promptEl);
   console.log(promptEl);
+
   var listEl = document.createElement("ul");
+
   for (i = 0; i < currentQuestion.choices.length; i++) {
     var choiceEl = document.createElement("button");
     listEl.appendChild(choiceEl);
@@ -80,19 +76,21 @@ function checkAnswer(event) {
   var correctAnswer = quizQuestions[currentQuestionIndex].correctChoice;
   console.log(correctAnswer);
   //check if right or wrong
+  if (selectedAnswer !== correctAnswer) {
+    timeRemaining = timeRemaining - 5;
+  }
 
-  // remember you have an array (array length and index relationship!)
-  //   if(there are questions left){
-  //   currentQuestionIndex ++
-  //   quizEl.innerHTML = ""
-  //   showQuestion()
-  //  } else{
-  //   endQuiz();
-  //  }
+  if (currentQuestionIndex <= quizQuestions.length) {
+    currentQuestionIndex++;
+    quizEl.innerHTML = "";
+    showQuestion();
+  } else {
+    endQuiz();
+  }
 }
 
 function endQuiz() {
-  console.log("ending");
+  console.log("ending the quiz");
 }
 
 startButton.addEventListener("click", function () {
